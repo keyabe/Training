@@ -74,4 +74,15 @@ class ProductTest < ActiveSupport::TestCase
           product.errors[:title].join('; ')
    end
 
+   test "product`s title should be longer 10" do
+     #  в названии товара должно быть не менее 10 символов
+     product = Product.new(title: products(:ruby).title,
+          description: "yyy",
+          price: 1,
+          image_url: "fred.gif")
+     assert !product.save
+     assert_equal I18n.translate('activerecord.errors.message.taken'),
+          product.errors[:title].join('; ')
+   end
+
 end
