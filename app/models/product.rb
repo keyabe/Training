@@ -15,11 +15,9 @@ class Product < ApplicationRecord
 
   #  Убеждаемся в отсутствии товарных позиций, ссылающихся на данный товар
   def ensure_not_referenced_by_any_line_item
-    if line_items.empty?
-      return true
-    else
-      errors.add(:base, 'существуют товарные позиции')
-      return false
+    unless line_items.empty?
+      errors.add(:base, 'Line Items present')
+      throw :abort
     end
   end
 end

@@ -1,5 +1,6 @@
 class CartsController < ApplicationController
   before_action :set_cart, only: %i[ show edit update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
 
   # GET /carts or /carts.json
   def index
@@ -8,6 +9,17 @@ class CartsController < ApplicationController
 
   # GET /carts/1 or /carts/1.json
   def show
+    begin
+      @cart = Cart.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      logger.error "Попытка доступа к несуществующей корзине #{params[:id]}"
+      redirect_to store_url, notice: 'Несуществующая корзина'
+    else
+      respond_to do |format|
+        format.html # show.html.erb
+        format.json {render json: @cart}
+      end
+    end
   end
 
   # GET /carts/new
@@ -49,22 +61,28 @@ class CartsController < ApplicationController
 
   # DELETE /carts/1 or /carts/1.json
   def destroy
-    @cart.destroy
+    @cart.destroy if @cart.id == session[:cart_id]
+    session[:cart_id] = nil
 
     respond_to do |format|
-      format.html { redirect_to carts_url, notice: "Cart was successfully destroyed." }
-      format.json { head :no_content }
+      format.html { redirect_to store_index_url, notice: "Теперь ваша корзина пуста." }
+      format.json { head :ok }
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cart
-      @cart = Cart.find(params[:id])
+    #  @cart = Cart.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def cart_params
       params.fetch(:cart, {})
+    end
+
+    def invalid_cart
+      logger.error "Attempt to access invalid cart #{params[:id]}"
+      redirect_to store_index_url, notice: 'Invalid cart'
     end
 end

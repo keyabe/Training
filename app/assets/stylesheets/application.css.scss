@@ -14,55 +14,90 @@
  *= require_self
  */
 
-#banner {
-  background: #9c9;
-  padding: 10px;
-  border-bottom: 2px solid;
-  font: small-caps 40px/40px "Times New Roman", serif;
-  color: #282;
-  text-align: center;
-
-  img {
-    float: left;
-    width: 50px;
+ body {
+   margin: 0;
+   padding: 0;
   }
-}
-
-#notice {
-  color: #000 !important;
-  border: 2px solid red;
-  padding: 1em;
-  margin-bottom: 2em;
-  background-color: #f0f0f0;
-  font: bold smaller sans-serif;
-}
-
-#columns {
-  background: #141;
-
-  #main {
-    margin-left: 17em;
-    padding: 1em;
-    background: white;
+ header.main {
+   text-align: center; // center on mobile
+   @media (min-width: 30em) {
+     text-align: left; // left align on desktop
+   }
+   background: #282;
+   margin: 0;
+   h1 {
+     display: none;
+   }
   }
 
-  #side {
-    float:left;
-    padding: 1em 2em;
-    width: 13em;
-    background: #141;
-
-    ul {
-      padding: 0;
-
-      li {
-        list-style: none;
-
-        a {
-          color: #bfb;
-          font-size: small;
+ .content {
+   margin: 0;
+   padding: 0;
+   display: flex;
+   display: -webkit-flex;
+   flex-direction: column; // mobile is horizontally laid out
+   -webkit-box-orient: vertical;
+   -webkit-box-direction: normal;
+   @media (min-width: 30em) {
+     flex-direction: row; // desktop is vertically laid out
+     -webkit-box-orient: horizontal;
+   }
+   nav {
+     padding-bottom: 1em;
+     background: #141;
+     text-align: center; // mobile has centered nav
+     @media (min-width: 30em) {
+       text-align: left; // desktop nav is left-aligned
+       padding: 1em; // and needs more padding
+     }
+     ul {
+       list-style: none;
+       margin: 0;
+       padding: 0;
+       @media (min-width: 30em) {
+         padding-right: 1em; // give desktop some extra space
+       }
+       li {
+         margin: 0;
+         padding: 0.5em;
+         text-transform: uppercase;
+         letter-spacing: 0.354em;
+         a {
+           color: #bfb;
+           text-decoration: none;
+         }
+         a:hover {
+           background: none;
+           color: white;
+         }
+       }
+     }
+   }
+ main {
+   padding: 0.5em;
+  }
+  .notice, #notice {
+    background: #ffb;
+    border-radius: 0.5em;
+    border: solid 0.177em #882;
+    color: #882;
+    font-weight: bold;
+    margin-bottom: 1em;
+    padding: 1em 1.414em;
+    text-align: center;
+    }
+    #cart {
+      article {
+        h2 {
+          margin-top: 0;
+        }
+        background: white;
+        border-radius: 0.5em;
+        margin: 1em;
+        padding: 1.414em;
+        @media (min-width: 30em) {
+          margin: 0; // desktop doesn't need this margin
         }
       }
     }
-  }
 }
