@@ -3,12 +3,13 @@ require "test_helper"
 class ProductsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @product = products(:one)
-      @update = {
+    @update = {
         title: 'Lorem Ipsum',
         description: 'Wibbles are fun!',
         image_url: 'lorem.jpg',
         price: 19.95
       }
+    @title = "The Great Book #{rand(1000)}"
   end
 
   test "should get index" do
@@ -23,7 +24,13 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create product" do
     assert_difference('Product.count') do
-      post products_url, params: { product: @update }
+      post products_url, params: { product: {
+                                    description: @product.description,
+                                    image_url: @product.image_url,
+                                    price: @product.price,
+                                    title: @title,
+                                    }
+                                  }
     end
 
     assert_redirected_to product_url(Product.last)
@@ -40,8 +47,22 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update product" do
-    patch product_url(@product), params: { product: @update }
+    patch product_url(@product), params: {
+      product: {
+        description: @product.description,
+        image_url: @product.image_url,
+        price: @product.price,
+        title: @title,
+        }
+      }
     assert_redirected_to product_url(@product)
+  end
+
+  test "can't delete product in cart" do
+    assert_difference('Product.count', 0) do
+      delete product_url(products(:two))
+    end
+    assert_redirected_to products_url
   end
 
   test "should destroy product" do

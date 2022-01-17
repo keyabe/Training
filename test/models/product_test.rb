@@ -20,12 +20,12 @@ class ProductTest < ActiveSupport::TestCase
      product.price = -1
      assert product.invalid?
      assert_equal "must be greater than or equal to 0.01",
-     product.errors[:price].join('; ')
+     product.errors[:price]
           #  должна быть больше или равно 0.01
      product.price = 0
      assert product.invalid?
      assert_equal "must be greater than or equal to 0.01",
-     product.errors[:price].join('; ')
+     product.errors[:price]
           #  должна быть больше или равно 0.01
      product.price = 1
      assert product.invalid?
@@ -43,12 +43,12 @@ class ProductTest < ActiveSupport::TestCase
               http://a.b.c/x/y/z/fred.gif }
      bad =%w{ fred.doc fred.gif/more fred.gif.more }
 
-     ok.each do |name|
-       assert new_product(name).valid?, "#{name} shouldn`t be invalid"
+     ok.each do |image_url|
+       assert new_product(name).valid?, "#{image_url} shouldn`t be invalid"
      end
 
-     bad.each do |name|
-       assert new_product(name).invalid?, "#{name} shouldn`t be valid"
+     bad.each do |image_url|
+       assert new_product(name).invalid?, "#{image_url} shouldn`t be valid"
      end
    end
 
@@ -58,8 +58,8 @@ class ProductTest < ActiveSupport::TestCase
           description: "yyy",
           price: 1,
           image_url: "fred.gif")
-     assert !product.save
-     assert_equal "has already been taken", product.errors[:title].join('; ')
+     assert product.invalid?
+     assert_equal "has already been taken", product.errors[:title]
                 #  уже было использовано
    end
 
@@ -69,9 +69,9 @@ class ProductTest < ActiveSupport::TestCase
           description: "yyy",
           price: 1,
           image_url: "fred.gif")
-     assert !product.save
-     assert_equal I18n.translate('activerecord.errors.message.taken'),
-          product.errors[:title].join('; ')
+     assert product.invalid?
+     assert_equal [I18n.translate('activerecord.errors.message.taken')],
+          product.errors[:title]
    end
 
    test "product`s title should be longer 10" do
