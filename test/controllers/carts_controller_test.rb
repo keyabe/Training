@@ -1,6 +1,6 @@
 require "test_helper"
 
-class CartsControllerTest < ActionController::IntegrationTest
+class CartsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @cart = carts(:one)
   end

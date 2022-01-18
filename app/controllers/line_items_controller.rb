@@ -1,7 +1,7 @@
 class LineItemsController < ApplicationController
   include CurrentCart
   before_action :set_cart, only: [:create]
-  before_action :set_line_item, only: %i[ show edit update destroy ]
+  before_action :set_line_item, only: [ :show, :edit, :update, :destroy ]
 
   # GET /line_items or /line_items.json
   def index
@@ -23,6 +23,7 @@ class LineItemsController < ApplicationController
 
   # POST /line_items or /line_items.json
   def create
+
     product = Product.find(params[:product_id])
     @line_item = @cart.add_product(product)
 
@@ -30,13 +31,15 @@ class LineItemsController < ApplicationController
       if @line_item.save
         format.html { redirect_to store_index_url }
         format.js { @current_item = @line_item }
-        format.json { render json:@line_item, status: :created, location: @line_item }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @line_item.errors, status: :unprocessable_entity }
+        format.json { render :show,
+          status: :created, location: @line_item }
+        else
+          format.html { render :new }
+          format.json { render json: @line_item.errors,
+            status: :unprocessable_entity }
+          end
+        end
       end
-    end
-  end
 
   # PATCH/PUT /line_items/1 or /line_items/1.json
   def update
