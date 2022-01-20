@@ -1,6 +1,8 @@
 class CartsController < ApplicationController
+  skip_before_action :authorize, only: [:create, :update, :destroy]
   before_action :set_cart, only: [ :show, :edit, :update, :destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_cart
+  include CurrentCart
 
   # GET /carts or /carts.json
   def index
@@ -61,11 +63,14 @@ class CartsController < ApplicationController
 
   # DELETE /carts/1 or /carts/1.json
   def destroy
-    @cart.destroy if @cart.id == session[:cart_id]
+    #debugger
+    #@cart.destroy if @cart.id == session[:cart_id]
+    @cart = current_cart
+    @cart.destroy
     session[:cart_id] = nil
 
     respond_to do |format|
-      format.html { redirect_to store_index_url, notice: "Теперь ваша корзина пуста." }
+      format.html { redirect_to store_url, notice: "Your cart is currently empty" }
       format.json { head :ok }
     end
   end

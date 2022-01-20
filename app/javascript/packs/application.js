@@ -6,6 +6,8 @@
 //= require jquery-ui
 //= require jquery_ujs
 //= require_tree .
+window.I18n = require("../../../public/javascripts/i18n")
+require("../../../public/javascripts/translations")
 
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
