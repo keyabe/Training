@@ -61,12 +61,23 @@ class LineItemsController < ApplicationController
 
   # DELETE /line_items/1 or /line_items/1.json
   def destroy
-    @line_item.destroy
+    # @line_item.destroy
+    #
+    # respond_to do |format|
+    #   format.html { redirect_to line_items_url, notice: "Line item was successfully destroyed." }
+    #   format.json { head :no_content }
+    # end
 
     respond_to do |format|
-      format.html { redirect_to line_items_url, notice: "Line item was successfully destroyed." }
-      format.json { head :no_content }
-    end
+        if @line_item.destroy
+          format.html { redirect_to store_url }
+          format.json { head :no_content }
+      else
+        format.html { render :delete }
+        format.json { render json: @line_item.errors,
+          status: :unprocessable_entity }
+        end
+      end
   end
 
   private

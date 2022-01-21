@@ -19,6 +19,10 @@ es:
       empty: "Vaciar Carrito"
       checkout: "Comprar"
 
+  line_items:
+    line_item:
+      delete: "Eliminar"
+
   number:
     currency:
       format:

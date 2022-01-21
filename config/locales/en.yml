@@ -50,6 +50,10 @@ en:
       empty: "Empty cart"
       checkout: "Checkout"
 
+  line_items:
+    line_item:
+      delete: "Delete"
+
   number:
     currency:
       format:
