@@ -1,3 +1,4 @@
+
 module AuthenticationHelpers
   def login_as(user)
     if respond_to? :visit
